@@ -20,6 +20,9 @@ body {
   overflow-x: hidden; /* prevents horizontal scrollbar */
 }
 
+:root {
+  --scrollbar-width: 0px; /* updated dynamically to avoid layout shift when locking scroll */
+}
 
 
 
@@ -92,10 +95,12 @@ body {
         margin: 0 auto;
         margin-top: 24px;   
         margin-bottom: 24px;
+        min-width: 0; /* ensure container can shrink without overflow */
     }
 
     .Nav-Logo {   
         display: flex;
+        min-width: 0; /* prevent flex overflow */
     }
 
     .Nav-Logo img{   
@@ -103,7 +108,10 @@ body {
         height: 22px;
     }
 
-    
+    .Nav-List {
+        min-width: 0; /* prevent flex overflow */
+    }
+
     .Nav-List ol{
         display: flex;
         margin: 0;
@@ -132,12 +140,15 @@ body {
         border-radius: 25px;
         display: flex;
         gap: 12px;
+        min-width: 0; /* allow shrinking in flex */
     }
 
     .search input{
         background-color: transparent;
         border: none;
         font-size: 16px;
+        width: 100%;
+        outline: none;
     }
 
     .search i{
@@ -148,6 +159,13 @@ body {
     .nav-icon{
         display: flex;
         gap: 15px;
+        min-width: 0;
+    }
+
+    .nav-icon img{
+        width: 24px;
+        height: 24px;
+        object-fit: contain;
     }
 
     .hamburger{
@@ -156,6 +174,133 @@ body {
 
     .Search-Icon{
         display: none;
+    }
+
+    /* Mobile menu (off-canvas) */
+    .mobile-menu{
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100dvh;
+        width: 85%;
+        max-width: 340px;
+        background: #ffffff;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+        z-index: 1000;
+        padding: 20px 16px 32px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        box-shadow: 2px 0 20px rgba(0,0,0,0.12);
+        overscroll-behavior: contain;
+    }
+
+    .mobile-menu.open{
+        transform: translateX(0);
+    }
+
+    .mobile-menu-header{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+    }
+
+    .mobile-menu-header img{
+        width: 126px;
+        height: 18px;
+    }
+
+    .mobile-close{
+        appearance: none;
+        border: none;
+        background: #F0F0F0;
+        width: 36px;
+        height: 36px;
+        border-radius: 18px;
+        font-size: 22px;
+        line-height: 36px;
+        text-align: center;
+        cursor: pointer;
+    }
+
+    .mobile-nav-list{
+        list-style: none;
+        padding: 8px 0 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        font-family: 'Inter', sans-serif;
+        font-size: 16px;
+    }
+
+    .mobile-nav-list li span{
+        margin-left: 4px;
+    }
+
+    .mobile-search{
+        background: #F0F0F0;
+        border-radius: 25px;
+        padding: 14px 16px;
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        margin-top: 8px;
+    }
+
+    .mobile-search input{
+        background: transparent;
+        border: none;
+        outline: none;
+        font-size: 16px;
+        width: 100%;
+    }
+
+    .backdrop{
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.35);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+        z-index: 900;
+    }
+
+    .backdrop.show{
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    body.nav-open{
+        overflow: hidden;
+        padding-right: var(--scrollbar-width);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .mobile-menu{ transition: none; }
+      .backdrop{ transition: none; }
+    }
+
+    /* Tablet and down */
+    @media (max-width: 1024px) {
+        .Nav-List ol{
+            display: none;
+        }
+
+        .search{
+            display: none;
+        }
+
+        .hamburger{
+            display: block;
+            margin-left: 15px;
+        }
+
+        .Search-Icon{
+            display: block;
+        }
     }
 
 
@@ -186,7 +331,6 @@ body {
 
 
 
-  
   }
 
 
@@ -224,11 +368,50 @@ body {
     </div> 
  </nav> 
 
+ <!-- Mobile off-canvas menu and backdrop -->
+ <div id="backdrop" class="backdrop" onclick="toggleMenu(false)"></div>
+ <aside id="mobileMenu" class="mobile-menu" aria-hidden="true">
+   <div class="mobile-menu-header">
+     <img src="Assets/SHOP.CO.png" alt="">
+     <button class="mobile-close" aria-label="Close menu" onclick="toggleMenu(false)">×</button>
+   </div>
+   <ol class="mobile-nav-list">
+     <li>Shop <span><img src="Assets/Navl-list Drowdown icon.png" alt=""></span></li>
+     <li>On Sale</li>
+     <li>New Arrivals</li>
+     <li>Brands</li>
+   </ol>
+   <div class="mobile-search">
+     <i class="fa-solid fa-magnifying-glass"></i>
+     <input type="text" placeholder="Search for products...">
+   </div>
+ </aside>
+
 
 
 <script>
   function closePromo() {
     document.getElementById('promoBar').style.display = 'none';
+  }
+
+  function toggleMenu(forceOpen) {
+    const menu = document.getElementById('mobileMenu');
+    const backdrop = document.getElementById('backdrop');
+    const shouldOpen = (typeof forceOpen === 'boolean') ? forceOpen : !menu.classList.contains('open');
+
+    if (shouldOpen) {
+      const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+      document.documentElement.style.setProperty('--scrollbar-width', scrollbarWidth + 'px');
+      menu.classList.add('open');
+      backdrop.classList.add('show');
+      document.body.classList.add('nav-open');
+      menu.setAttribute('aria-hidden', 'false');
+    } else {
+      menu.classList.remove('open');
+      backdrop.classList.remove('show');
+      document.body.classList.remove('nav-open');
+      menu.setAttribute('aria-hidden', 'true');
+    }
   }
 </script>
 
