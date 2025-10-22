@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clothes Ready</title>
+    <link rel="icon" href="Assets/shirtlogo.png" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+
+    <style>
+
+* {
+  box-sizing: border-box; /* includes padding & border in width */
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* prevents horizontal scrollbar */
+}
+
+
+
+
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+  }
+
+  /*  Promo bar */
+  .promo-bar {
+    height: 38px;
+    background-color: #222;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    
+    font-family: "Inter", sans-serif;
+    font-weight: 14px;
+    font-weight: 100;
+  }
+
+  .promo-bar a {
+    color: #FFFFFF;
+    text-decoration: underline;
+    margin-left: 5px;
+    font-weight: 300; 
+    font-size: 14px;
+  }
+
+  
+  .promo-close {
+    position: absolute;
+    right: 50px;
+    cursor: pointer;
+    font-size: 18px;
+    line-height: 18px;
+  }
+
+  @media (max-width: 480px) {
+  .promo-bar a { 
+    font-size: 12px;
+  }
+}
+
+</style>
+
+</head>
+<body>
+
+
+    
+<!-- Promo bar -->
+<div class="promo-bar" id="promoBar">
+  Sign up and get 20% off to your first order. 
+  <a href="#">Sign Up Now</a>
+  <span class="promo-close" onclick="closePromo()">×</span>
+</div>
+
+<!-- Nav -->
+ <style>
+    nav{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        max-width: 1440px;
+        width: 100%;
+        /* border: 1px solid black; */
+        margin: 0 auto;
+        margin-top: 24px;   
+        margin-bottom: 24px;
+    }
+
+    .Nav-Logo {   
+        display: flex;
+    }
+
+    .Nav-Logo img{   
+        width: 160px;
+        height: 22px;
+    }
+
+    
+    .Nav-List ol{
+        display: flex;
+        margin: 0;
+        gap: 24px;
+        padding: 0;
+    }
+
+    .Nav-List ol li{
+        list-style: none;
+        font-size: 16px;
+        font-family: 'Inter',sans-serif;
+        font-weight: 400;
+    }
+
+    .Nav-List ol li span{
+        margin-left: 4px;
+    }
+
+   
+
+    .search{
+        max-width: 577px;
+        width: 100%;
+        background-color: #F0F0F0;
+        padding: 16px;
+        border-radius: 25px;
+        display: flex;
+        gap: 12px;
+    }
+
+    .search input{
+        background-color: transparent;
+        border: none;
+        font-size: 16px;
+    }
+
+    .search i{
+        font-size: 20px;
+        color: grey;
+    }
+
+    .nav-icon{
+        display: flex;
+        gap: 15px;
+    }
+
+    .hamburger{
+        display: none;
+    }
+
+    .Search-Icon{
+        display: none;
+    }
+
+
+    @media (max-width: 480px) {
+        .Nav-Logo img{   
+        width: 126px;
+        height: 18px;
+        margin-left: 16px;
+    }
+
+    .Nav-List ol{
+        display: none;
+    }
+
+    .search{
+        display: none;
+    }
+
+    .hamburger{
+        display: block;
+        margin-left: 15px;
+
+    }
+
+    .Search-Icon{
+        display: block;
+    }
+
+
+
+  
+  }
+
+
+ </style>
+ <nav>
+    <div class="Nav-Logo">
+        <div class="hamburger" onclick="toggleMenu()">
+            <i class="fa-solid fa-bars"></i>
+        </div>
+        <img src="Assets/SHOP.CO.png"  alt="">
+
+    </div>
+
+    
+     <div class="Nav-List">
+        <ol>
+            <li>Shop <span><img src="Assets/Navl-list Drowdown icon.png" alt=""></span></li>
+            <li>On Sale</li>
+            <li>New Arrivals</li>
+            <li>Brands</li>
+        </ol>
+    </div> 
+     <div class="search">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" placeholder="Search for products...">
+
+    </div>
+
+    
+
+    <div class="nav-icon">
+        <i class="fa-solid fa-magnifying-glass Search-Icon" ></i>
+        <img src="Assets/Cart-icon.png" alt="">
+        <img src="Assets/Profile-icon.png" alt="">
+    </div> 
+ </nav> 
+
+
+
+<script>
+  function closePromo() {
+    document.getElementById('promoBar').style.display = 'none';
+  }
+</script>
+
+    
+</body>
+</html> 
